@@ -28,7 +28,7 @@ import org.springframework.web.filter.CorsFilter;
 public class ResourceServerConfig {
 
 	@Value("${cors.origins}")
-	private String corsOrigins;
+	private String corsOrigins; // Recurso que os navegadores tem que por padrão não deixa que um back-end ser acessado por um host que nâo esteja autorizado
 
 	@Bean
 	@Profile("test")
@@ -44,7 +44,7 @@ public class ResourceServerConfig {
 	@Order(3)
 	public SecurityFilterChain rsSecurityFilterChain(HttpSecurity http) throws Exception {
 
-		http.csrf(csrf -> csrf.disable());
+		http.csrf(csrf -> csrf.disable()); // Desabilitando defesa contra ataques csrf, pois a minha aplicação é stateles
 		http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
 		http.oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults()));
 		http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
